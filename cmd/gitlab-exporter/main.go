@@ -36,7 +36,7 @@ func main() {
 
 func getStats() string {
 	fmt.Printf("Updating")
-	projects := GetRepositories(gitlabUrl)
+	projects := GetRepositories(gitlabUrl, token)
 	stats := fmt.Sprintf("gitlab_last_update %d\n", time.Now().Unix())
 
 	for _,project := range projects {

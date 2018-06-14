@@ -37,14 +37,14 @@ type Project struct {
 func (project Project) PrometheusStats() string {
 	path := regexp.MustCompile(`\/`).ReplaceAllString(project.PathWithNamespace, "___")
 	stats := ""
-	stats = fmt.Sprintf("%s\ngitlab_project_stars{repo=%s} %d", stats, path, project.StarCount)
-	stats = fmt.Sprintf("%s\ngitlab_project_forks{repo=%s} %d", stats, path, project.ForkCount)
-	stats = fmt.Sprintf("%s\ngitlab_project_commit_count{repo=%s} %d", stats, path, project.Statistics.CommitCount)
-	stats = fmt.Sprintf("%s\ngitlab_project_storage_size{repo=%s} %d", stats, path, project.Statistics.StorageSize)
-	stats = fmt.Sprintf("%s\ngitlab_project_repository_size{repo=%s} %d", stats, path, project.Statistics.RepositorySize)
-	stats = fmt.Sprintf("%s\ngitlab_project_lfs_object_size{repo=%s} %d", stats, path, project.Statistics.LfsObjectSize)
-	stats = fmt.Sprintf("%s\ngitlab_project_job_artifacts_size{repo=%s} %d", stats, path, project.Statistics.JobArtifactsSize)
-	stats = fmt.Sprintf("%s\ngitlab_project_last_activity{repo=%s} %d", stats, path, project.LastActivityAt.Unix())
+	stats = fmt.Sprintf("%s\ngitlab_project_stars{repo=\"%s\"} %d", stats, path, project.StarCount)
+	stats = fmt.Sprintf("%s\ngitlab_project_forks{repo=\"%s\"} %d", stats, path, project.ForkCount)
+	stats = fmt.Sprintf("%s\ngitlab_project_commit_count{repo=\"%s\"} %d", stats, path, project.Statistics.CommitCount)
+	stats = fmt.Sprintf("%s\ngitlab_project_storage_size{repo=\"%s\"} %d", stats, path, project.Statistics.StorageSize)
+	stats = fmt.Sprintf("%s\ngitlab_project_repository_size{repo=\"%s\"} %d", stats, path, project.Statistics.RepositorySize)
+	stats = fmt.Sprintf("%s\ngitlab_project_lfs_object_size{repo=\"%s\"} %d", stats, path, project.Statistics.LfsObjectSize)
+	stats = fmt.Sprintf("%s\ngitlab_project_job_artifacts_size{repo=\"%s\"} %d", stats, path, project.Statistics.JobArtifactsSize)
+	stats = fmt.Sprintf("%s\ngitlab_project_last_activity{repo=\"%s\"} %d", stats, path, project.LastActivityAt.Unix())
 	return stats
 }
 

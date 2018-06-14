@@ -39,6 +39,12 @@ var (
 			"(https://golang.org/pkg/time/#example_Duration)[golang time package] is valid.\n" +
 			"Default to '5m'",
 	)
+	bind = flag.String(
+		"bind",
+		":8123",
+		"Address to bind to.\n" +
+			"The service will be available at this address.",
+	)
 )
 
 
@@ -51,7 +57,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "\nUsage\n")
 		fmt.Fprintf(os.Stderr,   "-----\n")
 		fmt.Fprintf(os.Stderr, "$ prometheus-gitlab-exporter --url='https://git.acme.org' --token='abcdef123'\n")
-		fmt.Fprintf(os.Stderr, "$ prometheus-gitlab-exporter --url='https://git.acme.org' --token='abcdef123' --poll-interval='15m'\n")
+		fmt.Fprintf(os.Stderr, "$ prometheus-gitlab-exporter --url='https://git.acme.org' --token='abcdef123' --poll-interval='15m' --bind='hostname.com:9898'\n")
 		fmt.Fprintf(os.Stderr, "\nArguments\n")
 		fmt.Fprintf(os.Stderr,   "---------\n")
 		flag.PrintDefaults()
@@ -80,8 +86,8 @@ func main() {
 	})
 
 	log.Printf("Listening on port :8123");
-	if err := http.ListenAndServe(":8123", router); err != nil {
-		log.Printf("Could not bind webserver to %q: %v", ":8123", err)
+	if err := http.ListenAndServe(*bind, router); err != nil {
+		log.Printf("Could not bind webserver to %q: %v", *bind, err)
 	}
 }
 

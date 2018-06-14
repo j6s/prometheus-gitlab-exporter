@@ -91,7 +91,7 @@ func getStats() string {
 	stats := fmt.Sprintf("gitlab_last_update %d\n", time.Now().Unix())
 
 	for _, project := range projects {
-		stats = fmt.Sprintf("%s\n%s", stats, project.PrometheusStats())
+		stats = fmt.Sprintf("%s\n%s\n", stats, project.PrometheusStats())
 	}
 	return stats
 }

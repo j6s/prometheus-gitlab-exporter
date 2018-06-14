@@ -54,8 +54,9 @@ func main() {
 	}
 
 	// Update the stats regularly
-	stats := getStats()
+	stats := "";
 	go func() {
+		stats = getStats()
 		log.Printf("Updating data every %v seconds", interval.Seconds())
 		for range time.Tick(interval) {
 			stats = getStats()

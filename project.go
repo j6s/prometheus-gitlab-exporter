@@ -1,29 +1,29 @@
 package main
 
 import (
-	"time"
-	"fmt"
-	"net/http"
 	"encoding/json"
+	"fmt"
 	"log"
+	"net/http"
 	"strconv"
+	"time"
 )
 
 type ProjectStats struct {
-		CommitCount int			`json:"commit_count"`
-		StorageSize int			`json:"storage_size"`
-		RepositorySize int		`json:"repository_size"`
-		LfsObjectSize int		`json:"lfs_object_size"`
-		JobArtifactsSize int	`json:"job_artifacts_size"`
+	CommitCount      int `json:"commit_count"`
+	StorageSize      int `json:"storage_size"`
+	RepositorySize   int `json:"repository_size"`
+	LfsObjectSize    int `json:"lfs_object_size"`
+	JobArtifactsSize int `json:"job_artifacts_size"`
 }
 
 type Project struct {
-	PathWithNamespace string	`json:"path_with_namespace"`
-	StarCount int			`json:"star_count"`
-	ForkCount int			`json:"fork_count"`
-	OpenIssueCount int		`json:"openIssueCount"`
-	LastActivityAt time.Time	`json:"last_activity_at"`
-	Statistics ProjectStats		`json:"statistics"`
+	PathWithNamespace string       `json:"path_with_namespace"`
+	StarCount         int          `json:"star_count"`
+	ForkCount         int          `json:"fork_count"`
+	OpenIssueCount    int          `json:"openIssueCount"`
+	LastActivityAt    time.Time    `json:"last_activity_at"`
+	Statistics        ProjectStats `json:"statistics"`
 }
 
 /**
@@ -63,7 +63,7 @@ func GetRepositories(gitlabUrl string, token string) []Project {
 		log.Printf("Requesting %s\n", projectsUrl)
 		response, error := http.Get(projectsUrl)
 		if error != nil {
-			panic(error);
+			panic(error)
 		}
 
 		// Merge the results back to the complete array.
@@ -87,5 +87,5 @@ func GetRepositories(gitlabUrl string, token string) []Project {
 		}
 	}
 
-	return projects;
+	return projects
 }

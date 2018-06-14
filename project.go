@@ -48,10 +48,8 @@ func (project Project) PrometheusStats() string {
 
 /**
  *	Fetches all projects from the configured gitlab endpoint.
- *	This method will panic if there are any errors.
  *
  *	@return A list of all projects known to the current gitlab instance
- *	@panic If there is an error while fetching the projects or decoding the JSON response
  */
 func GetRepositories(gitlabUrl string, token string) []Project {
 	projects := make([]Project, 0)
@@ -63,7 +61,7 @@ func GetRepositories(gitlabUrl string, token string) []Project {
 		log.Printf("Requesting %s\n", projectsUrl)
 		response, error := http.Get(projectsUrl)
 		if error != nil {
-			panic(error)
+			log.Fatalf(error.Error())
 		}
 
 		// Merge the results back to the complete array.

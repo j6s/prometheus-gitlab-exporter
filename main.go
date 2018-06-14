@@ -13,37 +13,32 @@ var (
 	token = flag.String(
 		"token",
 		"",
-		"The personal access token that is used to communicate with the API." +
-			"for more information about the Gitlab API please refer to the" +
-			"[Gitlab documentation](https://docs.gitlab.com/ee/api/#personal-access-tokens)",
+			"The personal access token that is used to communicate with \n" +
+			"the API. For more information about the Gitlab API please \n" +
+			"refer to the GitLab documentation.\n" +
+			"https://docs.gitlab.com/ee/api/#personal-access-tokens",
 	)
 	gitlabUrl = flag.String(
 		"url",
 		"",
-		"The base URL of the gitlab instance including protocol.\n" +
+			"The base URL of the gitlab instance including protocol.\n" +
 			"This string must not contain any path information other than the\n" +
 			"index route of gitlab. If your server runs on a non-standard port\n" +
 			"(not 80 or 443 for http and https) then you may specify it using\n" +
-			"a colon.\n\n" +
-			"Examples:\n" +
-		 	"\t- `https://git.acme.org` - gitlab running on port 443 directly" +
-			"\t- `http://git.acme.org:8080` - gitlab running on port 8080 over http" +
-			"\t- `https://acme.org/gitlab` - gitlab running in a subdirectory",
+			"a colon.",
 	)
 	pollInterval = flag.Duration(
 		"poll-interval",
 		5 * time.Minute,
 		"Poll interval in minutes. The data will be updated every time interval\n" +
 			"in order to avoid excessive API use.\n" +
-			"Every string accepted by the " +
-			"(https://golang.org/pkg/time/#example_Duration)[golang time package] is valid.\n" +
-			"Default to '5m'",
+			"Every string accepted by the golang time package is valid.\n" +
+			"https://golang.org/pkg/time/#example_Duration\n",
 	)
 	bind = flag.String(
 		"bind",
 		":8123",
-		"Address to bind to.\n" +
-			"The service will be available at this address.",
+		"Address to bind to. The service will be available at this address.\n",
 	)
 )
 

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 	"flag"
+	"log"
 )
 
 var (
@@ -43,18 +44,19 @@ var (
 func main() {
 	flag.Parse();
 
+	// Validate arguments
 	if *gitlabUrl == "" && *token == "" {
-		panic("The arguments --token and --url must be set")
+		log.Fatalf("The arguments --token and --url must be set")
 	}
 	interval, err := time.ParseDuration(*pollInterval);
 	if err != nil {
-		panic(err.Error())
+		log.Fatalf(err.Error())
 	}
 
 	// Update the stats regularly
 	stats := getStats()
 	go func() {
-
+		log.Printf("Updating data every %v seconds", interval.Seconds())
 		for range time.Tick(interval) {
 			stats = getStats()
 		}
@@ -66,14 +68,14 @@ func main() {
 		fmt.Fprintf(w, "%s", stats)
 	})
 
-	fmt.Printf("Listening on port :8123");
+	log.Printf("Listening on port :8123");
 	if err := http.ListenAndServe(":8123", router); err != nil {
-		panic(fmt.Sprintf("Could not bind webserver to %q: %v", ":8123", err))
+		log.Printf("Could not bind webserver to %q: %v", ":8123", err)
 	}
 }
 
 func getStats() string {
-	fmt.Printf("Updating")
+	log.Printf("Updating")
 	projects := GetRepositories(*gitlabUrl, *token)
 	stats := fmt.Sprintf("gitlab_last_update %d\n", time.Now().Unix())
 

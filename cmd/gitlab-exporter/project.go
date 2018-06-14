@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"encoding/json"
+	"log"
+	"strconv"
 )
 
 type ProjectStats struct {
@@ -48,24 +50,41 @@ func (project Project) PrometheusStats() string {
  *	Fetches all projects from the configured gitlab endpoint.
  *	This method will panic if there are any errors.
  *
- *	@todo Implement multiple pages
- *	@todo Improve error handling
- *
  *	@return A list of all projects known to the current gitlab instance
  *	@panic If there is an error while fetching the projects or decoding the JSON response
  */
 func GetRepositories(gitlabUrl string, token string) []Project {
-	projectsUrl := fmt.Sprintf("%s/api/v4/projects?private_token=%s&per_page=100&statistics=1", gitlabUrl, token)
-	response, error := http.Get(projectsUrl)
-	if error != nil {
-		panic(error);
-	}
-
-
 	projects := make([]Project, 0)
-	error = json.NewDecoder(response.Body).Decode(&projects)
-	if error != nil {
-		panic(error)
+	page := 1
+
+	for true {
+		// Fetch a page from the API.
+		projectsUrl := fmt.Sprintf("%s/api/v4/projects?private_token=%s&per_page=100&statistics=1&page=%d", gitlabUrl, token, page)
+		log.Printf("Requesting %s\n", projectsUrl)
+		response, error := http.Get(projectsUrl)
+		if error != nil {
+			panic(error);
+		}
+
+		// Merge the results back to the complete array.
+		projectsInPage := make([]Project, 0)
+		error = json.NewDecoder(response.Body).Decode(&projectsInPage)
+		if error != nil {
+			log.Fatalf(error.Error())
+		}
+		projects = append(projects, projectsInPage...)
+
+		// Parse the X-Next-Page Header in order to figure out
+		// if another page should be requested.
+		// If not, then return the current projects.
+		pageHeader := response.Header["X-Next-Page"][0]
+		if pageHeader == "" {
+			return projects
+		}
+		page, error = strconv.Atoi(pageHeader)
+		if error != nil {
+			log.Fatalf(error.Error())
+		}
 	}
 
 	return projects;

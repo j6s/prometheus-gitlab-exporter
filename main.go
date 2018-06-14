@@ -6,6 +6,7 @@ import (
 	"time"
 	"flag"
 	"log"
+	"os"
 )
 
 var (
@@ -42,6 +43,19 @@ var (
 
 
 func main() {
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "Prometheus Gitlab exporter \n")
+		fmt.Fprintf(os.Stderr, "============================\n")
+		fmt.Fprintf(os.Stderr, "Simple exporter that exposes gitlab project statistics to prometheus.\n")
+		fmt.Fprintf(os.Stderr, "https://github.com/j6s/prometheus-gitlab-exporter\n")
+		fmt.Fprintf(os.Stderr, "\nUsage\n")
+		fmt.Fprintf(os.Stderr,   "-----\n")
+		fmt.Fprintf(os.Stderr, "$ prometheus-gitlab-exporter --url='https://git.acme.org' --token='abcdef123'\n")
+		fmt.Fprintf(os.Stderr, "$ prometheus-gitlab-exporter --url='https://git.acme.org' --token='abcdef123' --poll-interval='15m'\n")
+		fmt.Fprintf(os.Stderr, "\nArguments\n")
+		fmt.Fprintf(os.Stderr,   "---------\n")
+		flag.PrintDefaults()
+	}
 	flag.Parse();
 
 	// Validate arguments

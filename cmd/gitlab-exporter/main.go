@@ -28,6 +28,15 @@ var (
 			"\t- `http://git.acme.org:8080` - gitlab running on port 8080 over http" +
 			"\t- `https://acme.org/gitlab` - gitlab running in a subdirectory",
 	)
+	pollInterval = flag.String(
+		"poll-interval",
+		"5m",
+		"Poll interval in minutes. The data will be updated every time interval\n" +
+			"in order to avoid excessive API use.\n" +
+			"Every string accepted by the " +
+			"(https://golang.org/pkg/time/#example_Duration)[golang time package] is valid.\n" +
+			"Default to '5m'",
+	)
 )
 
 
@@ -37,11 +46,16 @@ func main() {
 	if *gitlabUrl == "" && *token == "" {
 		panic("The arguments --token and --url must be set")
 	}
+	interval, err := time.ParseDuration(*pollInterval);
+	if err != nil {
+		panic(err.Error())
+	}
 
 	// Update the stats regularly
 	stats := getStats()
 	go func() {
-		for range time.Tick(5 * time.Minute) {
+
+		for range time.Tick(interval) {
 			stats = getStats()
 		}
 	}()

@@ -55,7 +55,7 @@ func (project Project) PrometheusStats() string {
  *	@panic If there is an error while fetching the projects or decoding the JSON response
  */
 func GetRepositories(gitlabUrl string, token string) []Project {
-	projectsUrl := fmt.Sprintf("%s/api/v4/projects?private_token=%s&pageSize=100&statistics=1", gitlabUrl, token)
+	projectsUrl := fmt.Sprintf("%s/api/v4/projects?private_token=%s&per_page=100&statistics=1", gitlabUrl, token)
 	response, error := http.Get(projectsUrl)
 	if error != nil {
 		panic(error);

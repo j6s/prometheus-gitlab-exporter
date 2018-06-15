@@ -5,7 +5,38 @@ projects in gitlab.
 
 ## Installation
 
-To install gitlab exporter simply get the package using `go get github.com/j6s/prometheus-gitlab-exporter`.
+To install gitlab exporter simply grab a binary from the [releases page](https://github.com/j6s/prometheus-gitlab-exporter/releases).
+
+## Stats
+
+The following is an example of the stats collected by this exporter.
+`gitlab_last_update` contains the timestamp of the last time the data
+has been updated from the gitlab API: Data is not updated everytime
+the `/metrics` endpoint is called - it is updated in regular intervals
+(every 5 minutes by default) in order to not produce to many API
+requests.
+
+```
+gitlab_last_update 1529090327
+
+gitlab_project_stars{repo="namespace1___project1"} 0
+gitlab_project_forks{repo="namespace1___project1"} 0
+gitlab_project_commit_count{repo="namespace1___project1"} 0
+gitlab_project_storage_size{repo="namespace1___project1"} 0
+gitlab_project_repository_size{repo="namespace1___project1"} 0
+gitlab_project_lfs_object_size{repo="namespace1___project1"} 0
+gitlab_project_job_artifacts_size{repo="namespace1___project1"} 0
+gitlab_project_last_activity{repo="namespace1___project1"} 1529046202
+
+gitlab_project_stars{repo="namespace2___project2"} 0
+gitlab_project_forks{repo="namespace2___project2"} 0
+gitlab_project_commit_count{repo="namespace2___project2"} 11
+gitlab_project_storage_size{repo="namespace2___project2"} 94371
+gitlab_project_repository_size{repo="namespace2___project2"} 94371
+gitlab_project_lfs_object_size{repo="namespace2___project2"} 0
+gitlab_project_job_artifacts_size{repo="namespace2___project2"} 0
+gitlab_project_last_activity{repo="namespace2___project2"} 1528462352
+```
 
 ## Usage
 
